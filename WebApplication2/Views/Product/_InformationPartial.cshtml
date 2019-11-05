@@ -1,0 +1,31 @@
+﻿@model WebApplication2.Models.ProductModel
+<style>
+    .line-breaks {
+        white-space: pre-line;
+    }
+</style>
+
+<div class="container" style="text-align:center">
+    <h4>
+        <b>
+            @Html.DisplayFor(model => model.Title)
+        </b>
+    </h4>
+    <h6>
+        <i>
+            @Html.DisplayFor(model => model.Description)
+        </i>
+    </h6>
+    <hr />
+    <p>
+        Innehåll:
+    </p>
+
+
+    <p>
+        <span class="line-breaks">@Html.DisplayFor(model => model.Contents)</span>
+    </p>
+
+
+
+</div>

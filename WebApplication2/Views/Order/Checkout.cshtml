@@ -1,0 +1,62 @@
+﻿@model OrderModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col col-sm-6">
+        <h3>Ange dina uppgifter.</h3>
+        <hr />
+        Vi behöver säljarens namn och några kontaktuppgifter.<br /> För att er klass / förening lättare ska kunna hålla reda på vad ni beställt.
+        <br /><br />
+        Tryck "Lägg till order" för att lägga till den i "Väntande ordrar".
+
+
+    </div>
+
+    <div class="col col-sm-6">
+        <div class="jumbotron jumbotron-shop">
+
+                <form asp-action="Checkout" method="post" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="col-md-12 control-label">Förnamn</label>
+                        <div class="col-md-12">
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="col-md-12 control-label">Efternamn</label>
+                        <div class="col-md-12">
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="col-md-12 control-label">Telefonnummer</label>
+                        <div class="col-md-12">
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="col-md-12 control-label">Email</label>
+                        <div class="col-md-12">
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="btn-group col-md-offset-2 col-md-12">
+                            <input class="btn btn-success" type="submit" value="Lägg till order" />
+                            @*<input class="btn btn-default" type="submit" value="Return " />*@
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+
+</div>

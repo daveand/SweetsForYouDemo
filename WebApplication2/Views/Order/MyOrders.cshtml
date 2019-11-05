@@ -1,0 +1,401 @@
+﻿@model MyOrdersViewModel
+
+@{
+    ViewData["Title"] = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col col-12 col-lg-7">
+        <h1>Mina Ordrar</h1>
+    </div>
+    <div class="col col-12 col-lg-5">
+        <nav class="nav navbar-expand">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav text-right">
+                    <li class="nav-item" style="padding-right: 20px;">
+                        Ordrar lagda
+                        <br />
+                        <b>
+                            @Model.OrderQuantity / @Model.Participants
+                        </b>
+                    </li>
+                    @*<li class="nav-item" style="padding-right: 20px;">
+                        Total försäljning
+                        <br />
+                        <b>
+                            @Model.TotalSales.ToString() kr
+                        </b>
+                    </li>*@
+                    <li class="nav-item">
+                        Intjänat belopp
+                        <br />
+                        <b>
+                            @Model.TotalMargin.ToString() kr
+                        </b>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#infoModal">
+                            <i class="far fa-question-circle fa-2x" style="color: steelblue;"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col col-sm-12">
+
+        <div class="jumbotron jumbotron-shop">
+            <div class="row">
+                <div class="col col-sm-6">
+                    <h2>Väntande</h2>
+                </div>
+
+                <div class="col col-sm-6">
+                    @if (Model.PendingNotEmpty && Model.OrderQuantity >= Model.Participants)
+                    {
+                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#ordersModal">Skicka alla ordrar för leverans</button>
+                    }
+                    else if (Model.PendingNotEmpty)
+                    {
+                <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#ordersModalNotComplete">Skicka alla ordrar för leverans</button>
+                    }
+
+                </div>
+            </div>
+
+            <table class="table table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            Ordernr.
+                        </th>
+                        <th>
+                            Förnamn
+                        </th>
+                        <th>
+                            Efternamn
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Telefon
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PendingOrders)
+                    {
+                        @if (item.OrderState.OrderSent == false && item.OrderState.OrderDelivered == false)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @*<a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |*@
+                                    <a asp-action="MyOrdersDetails" asp-route-id="@item.Id">Detaljer</a> |
+                                    <a asp-action="MyOrdersDelete" asp-route-id="@item.Id">Radera</a>
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+            <center>
+                <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+                    @*@if (Model.Products.HasPreviousPage)
+                        {
+                            <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+                        }*@
+
+                    @for (var i = 1; i <= Model.PendingOrders.TotalPages; i++)
+                    {
+                        @if (Model.PendingOrders.PageIndex == i)
+                        {
+                            <a asp-action="MyOrders" asp-route-pendingPageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+                        }
+                        else
+                        {
+                            <a asp-action="MyOrders" asp-route-pendingPageIndex="@i" class="btn btn-outline-info">@i</a>
+                        }
+                    }
+
+                    @*@if (Model.Products.HasNextPage)
+                        {
+                            <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+                        }*@
+                </div>
+            </center>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col col-sm-12">
+        <div class="jumbotron jumbotron-shop">
+            <div class="row">
+                <div class="col col-sm-12">
+                    <h2>Klarmarkerade</h2>
+
+                </div>
+            </div>
+            <table class="table table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            Ordernr.
+                        </th>
+                        <th>
+                            Förnamn
+                        </th>
+                        <th>
+                            Efternamn
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Telefon
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PendingOrders)
+                    {
+                        @if (item.OrderState.OrderSent == true && item.OrderState.OrderDelivered == false)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col col-sm-12">
+        <div class="jumbotron jumbotron-shop">
+            <h2>Levererade</h2>
+            <table class="table table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            Ordernr.
+                        </th>
+                        <th>
+                            Förnamn
+                        </th>
+                        <th>
+                            Efternamn
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Telefon
+                        </th>
+                        <th>
+                            Levererad
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.DeliveredOrders)
+                    {
+                        @if (item.OrderState.OrderDelivered == true)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderState.DateDelivered)
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+            <center>
+                <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+                    @*@if (Model.Products.HasPreviousPage)
+                        {
+                            <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+                        }*@
+
+                    @for (var i = 1; i <= Model.DeliveredOrders.TotalPages; i++)
+                    {
+                        @if (Model.DeliveredOrders.PageIndex == i)
+                        {
+                            <a asp-action="MyOrders" asp-route-deliveredPageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+                        }
+                        else
+                        {
+                            <a asp-action="MyOrders" asp-route-deliveredPageIndex="@i" class="btn btn-outline-info">@i</a>
+                        }
+                    }
+
+                    @*@if (Model.Products.HasNextPage)
+                        {
+                            <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+                        }*@
+                </div>
+            </center>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Pending orders modal -->
+<div class="modal" id="infoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Mina ordrar</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>
+                    "Total Försäljning" <br />
+                    Totalt belopp för ordrar som är väntande eller klarmarkerade men ej levererats.
+                </p>
+                <p>
+                    "Intjänad Marginal" <br />
+                    Totalt intjänad marginal för ordrar som är väntande eller klarmarkerade men ej levererats.
+                </p>
+                <p>
+                    "Väntande" <br />
+                    Här visas de ordrar varje person lagt.
+                    När alla säljare lagt sina ordrar klickar ENDAST ANSVARIG iväg er beställning.
+                    Detta görs på knappen ”Skicka alla ordrar för leverans”
+                    Era beställningar hamnar då som klarmarkerade.
+                </p>
+                <p>
+                    Om ni vill ändra någon av era ordrar, radera ordern och lägg en ny.
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm send orders modal -->
+<div class="modal" id="ordersModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Skicka alla ordrar för leverans?</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>
+                    Är du säker på att du vill skicka alla ordrar för leverans? <br />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Avbryt</button>
+                <form asp-controller="Order" asp-action="SendOrder" method="POST">
+                    <input type="submit" value="Skicka alla ordrar för leverans" class="btn btn-success float-right" />
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm send orders modal -->
+<div class="modal" id="ordersModalNotComplete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">OBS!</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">              
+                <p>
+                    ALLA SÄLJARE VERKAR INTE HA LAGT SINA ORDRAR.<br />
+                    DET ÄR ENDAST ANSVARIG SOM KLICKAR PÅ DENNA KNAPP NÄR ALLA ÄR KLARA.<br />
+                    DÅ BLIR ERA ORDRAR KLARMARKERADE OCH REDO FÖR LEVERANS!<br />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Avbryt</button>
+                <form asp-controller="Order" asp-action="SendOrder" method="POST">
+                    <input type="submit" value="SKICKA ALLA ORDRAR FÖR LEVERANS" class="btn btn-success float-right" />
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>

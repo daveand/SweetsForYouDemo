@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-WebApplication2-3E8B655C-4195-4BB7-96F5-6F7E6044B751</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <RuntimeFrameworkVersion>2.2.4</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="PDFNative\**" />
+    <Content Remove="PDFNative\**" />
+    <EmbeddedResource Remove="PDFNative\**" />
+    <None Remove="PDFNative\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20190514091345_shoppingcartitem1.cs" />
+    <Compile Remove="Data\Migrations\20190514091345_shoppingcartitem1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190514091400_shoppingcartitem.cs" />
+    <Compile Remove="Data\Migrations\20190514091400_shoppingcartitem.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190514092644_newmodel.cs" />
+    <Compile Remove="Data\Migrations\20190514092644_newmodel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190514093044_newmodel2.cs" />
+    <Compile Remove="Data\Migrations\20190514093044_newmodel2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190514093337_newmodel3.cs" />
+    <Compile Remove="Data\Migrations\20190514093337_newmodel3.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190514093654_newmodel4.cs" />
+    <Compile Remove="Data\Migrations\20190514093654_newmodel4.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190514094509_newmodel5.cs" />
+    <Compile Remove="Data\Migrations\20190514094509_newmodel5.Designer.cs" />
+    <Compile Remove="Migrations\20190608131608_Initial.cs" />
+    <Compile Remove="Migrations\20190608131608_Initial.Designer.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.3.1" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
+    <PackageReference Include="jQuery.DataTables.Net" Version="1.10.5" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.HostingStartup" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureAppServicesIntegration" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="RazorLight" Version="2.0.0-beta1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
+</Project>

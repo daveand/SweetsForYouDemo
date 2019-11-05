@@ -1,0 +1,28 @@
+﻿@model WebApplication2.Models.ViewModels.ShoppingCartViewModel
+
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@inject SignInManager<IdentityUser> SignInManager
+
+    <ul class="navbar-nav navbar-expand">
+
+        @if (Model.ShoppingCart.ShoppingCartItems.Count > 0 && SignInManager.IsSignedIn(User))
+        {
+            @*<li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="ShoppingCart" asp-action="Index">Kundvagn</a>
+            </li>*@
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="ShoppingCart" asp-action="Index">
+                    <span style="font-size: 14px;">Kundkorg</span> 
+                    <span class="fas fa-shopping-cart"></span>
+                    <span id="cart-status">
+                        @Model.ShoppingCart.ShoppingCartItems.Count
+                    </span>
+
+                </a>
+            </li>
+
+
+
+        }
+</ul>

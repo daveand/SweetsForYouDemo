@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "CheckoutComplete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<center>
+    <div class="jumbotron jumbotron-shop">
+        <h1>
+            @ViewBag.CheckoutCompleteMessage
+        </h1>
+        <h6>
+            Din order läggs nu som Väntande <br />
+            <a asp-controller="Order" asp-action="MyOrders">Gå till Mina ordrar.</a>
+
+        </h6>
+    </div>
+
+</center>
+

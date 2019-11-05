@@ -1,0 +1,89 @@
+﻿@model WebApplication2.Models.ContactFormModel
+
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row contact-bg">
+    <div class="col col-12 col-lg-8 text-center">
+        <br />
+        <div style="font-family: 'active'; font-size: 85px;">
+            Kontakt
+        </div>
+        <div style="font-family: 'Sans Serif'; font-size: 16px;">
+            Har du några frågor?
+            <br />
+            Kontakta oss via frågeformuläret, mail eller telefon.
+        </div>
+        <br />
+        <div style="font-family: 'Sans Serif'; font-size: 16px;">
+            SWEETS for you
+            <br />
+            <a href="mailto:info@@sweetsforyou.se">info@sweetsforyou.se</a>
+            <br />
+            0730 64 65 33
+        </div>
+
+        <div style="font-family: 'Sans Serif'; font-size: 16px;">
+            <br />
+            Telefontid:<br />
+            Mån-Ons 9-12
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col col-12 col-lg-12 text-center" style="font-size: 10px;">
+                Sweets for you - Norra Bohusvägen 1, 45760 Hällevadsholm
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <div class="col col-12 col-lg-4">
+        <img class="navbar-large frage-bubb" src="~/images/bubbfråge.png"/>
+    </div>
+
+</div>
+<br />
+<div class="row align-content-center align-items-center">
+    <div class="col col-12 col-lg-6">
+        <form asp-action="ContactMessage" method="POST" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">Förnamn</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">Efternamn</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label">Meddelande</label>
+                <textarea asp-for="Message" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Skicka" class="btn btn-info" />
+            </div>
+
+        </form>
+
+    </div>
+    <div class="col col-12 col-lg-6 navbar-large">
+        <center>
+            <img src="~/images/LOGO.png" width="400" />
+
+        </center>
+    </div>
+</div>

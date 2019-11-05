@@ -1,0 +1,135 @@
+﻿@model WebApplication2.Models.ViewModels.ProductListViewModel
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .line-breaks {
+        white-space: pre-line;
+    }
+</style>
+
+<div class="navbar-large">
+    <img class="prodinfo-bubb" src="~/images/Prod.bubb.png" alt="Alternate Text" />
+</div>
+<div class="text-right" style="margin-top: -40px;">
+    <button class="btn btn-shop" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Visa innehåll
+    </button>
+
+</div>
+
+<center>
+    <h4 style="font-family: 'Active'">Våra produkter är noga utvalda av finaste kvalité!</h4>
+    <br />
+    <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+        @*@if (Model.Products.HasPreviousPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+            }*@
+
+        @for (var i = 1; i <= Model.Products.TotalPages; i++)
+        {
+            @if (Model.Products.PageIndex == i)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+            }
+            else
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@i" class="btn btn-outline-info">@i</a>
+            }
+        }
+
+        @*@if (Model.Products.HasNextPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+            }*@
+    </div>
+</center>
+<br />
+<div class="row marginTop">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col col-12 col-lg-6">
+            <div class="thumbnail">
+                <div class="jumbotron jumbotron-shop" style="min-height:250px;">
+                    <div class="row">
+                        <div class="col col-12 col-sm-6 text-center">
+                            <img class="img-fluid" src="~/images/@product.ImageFile" alt="" width="250" height="250" />
+                        </div>
+                        <div class="col col-sm-6" style="font-family: 'Futura'">
+                            <br />
+                            <h4>
+                                @if (product.Title.IndexOf("0") == 0)
+                                {
+                                    @product.Title.Replace("0", "")
+                                }
+                                else
+                                {
+                                    @product.Title
+                                }
+                            </h4>
+                            <h6>
+                                <i>@product.SubTitle</i>
+                            </h6>
+                            <hr />
+                            <h6 class="newlines" style="font-family: 'Avenir'; margin-top: -20px;">
+                                @product.Description
+                            </h6>
+                            <h6 class="">
+                                <b>
+                                    @product.Price kr
+
+                                </b>
+                            </h6>
+
+
+                        </div>
+                    </div>
+                    <div class="accordion" id="accordionExample">
+                        <div class="row">
+                            <div class="col col-sm-12">
+
+                                <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                    Innehåll:
+                                    <br />
+                                    <span class="line-breaks">@product.Contents</span>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+<center>
+    <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+        @*@if (Model.Products.HasPreviousPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+            }*@
+
+        @for (var i = 1; i <= Model.Products.TotalPages; i++)
+        {
+            @if (Model.Products.PageIndex == i)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+            }
+            else
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@i" class="btn btn-outline-info">@i</a>
+            }
+        }
+
+        @*@if (Model.Products.HasNextPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+            }*@
+    </div>
+</center>

@@ -1,0 +1,112 @@
+﻿@model SendOrderViewModel
+
+@{
+    ViewData["Title"] = "Skicka order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Följande beställning har klarmarkerats:</h2>
+<br />
+
+
+@foreach (var item in Model.Orders)
+{
+    <div class="jumbotron">
+
+        <dl class="row">
+            <dt class="col-sm-2" style="font-size:20px">
+                Ordernummer
+            </dt>
+            <dd class="col-sm-10" style="font-size:20px">
+                @Html.DisplayFor(modelItem => item.Id)
+            </dd>
+            <dt class="col-sm-2">
+                Förnamn
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </dd>
+            <dt class="col-sm-2">
+                Efternamn
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(modelItem => item.LastName)
+            </dd>
+            <dt class="col-sm-2">
+                Email
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(modelItem => item.Email)
+            </dd>
+            <dt class="col-sm-2">
+                Telefon
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </dd>
+
+
+        </dl>
+
+        <table class="table border-dark table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Details Id
+                    </th>
+                    <th>
+                        Details Title
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Sub Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var line in Model.Details)
+                {
+                    @if (line.OrderId == item.Id)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => line.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => line.ProductTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => line.Quantity)
+                            </td>
+                            <td>
+                                @((line.Quantity * line.Price).ToString("c"))
+                            </td>
+
+
+
+                        </tr>
+
+                    }
+
+                }
+
+
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">Total:</td>
+                    <td class="text-left">
+                        @((item.OrderTotal).ToString("c"))
+
+                    </td>
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+}

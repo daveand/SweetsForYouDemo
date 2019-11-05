@@ -1,0 +1,350 @@
+﻿@model WebApplication2.Models.ViewModels.CustomerInfoModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="row">
+    <div class="col col-sm-3">
+        <h2>Detaljer</h2>
+        <hr />
+        <dl class="col">
+            <dt class="row">
+                Kundnummer
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Id)
+            </dd>
+            <dt class="row">
+                Förnamn
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.FirstName)
+            </dd>
+            <dt class="row">
+                Efternamn
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.LastName)
+            </dd>
+            <dt class="row">
+                Användarnamn
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.User.UserName)
+            </dd>
+            <dt class="row">
+                Email
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.User.Email)
+            </dd>
+            <dt class="row">
+                Telefon
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Telephone)
+            </dd>
+        </dl>
+        <hr />
+        <dl class="col">
+            <dt class="row">
+                Skola / Förening
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Company)
+            </dd>
+            <dt class="row">
+                Klass / Avdelning
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Department)
+            </dd>
+            <dt class="row">
+                Antal säljare
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Participants)
+            </dd>
+            <hr>
+            <dt class="row">
+                Mottagare
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Receiver)
+            </dd>
+            <dt class="row">
+                Gatuaddress
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.Street)
+            </dd>
+            <dt class="row">
+                Postnummer
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.PostalCode)
+            </dd>
+            <dt class="row">
+                Stad / Ort
+            </dt>
+            <dd class="row">
+                @Html.DisplayFor(model => model.CustomerModel.City)
+            </dd>
+
+        </dl>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.CustomerModel.Id">Ändra</a> |
+            <a asp-action="Index">Tillbaka</a>
+        </div>
+    </div>
+    <div class="col col-sm-9">
+        <div class="row">
+            <div class="col col-sm-12">
+
+                <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#deliveryModal">Markera som levererad</button>
+                <h2>Aktiv Order</h2>
+                <hr />
+                <table class="table table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Ordernummer
+                            </th>
+                            <th>
+                                Förnamn
+                            </th>
+                            <th>
+                                Efternamn
+                            </th>
+                            <th>
+                                Klarmarkerad
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var line in Model.Orders)
+                        {
+                            if (!line.OrderState.OrderDelivered)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.Id)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.LastName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.OrderState.OrderSent)
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Order" asp-action="Edit" asp-route-id="@line.Id">Edit</a> |
+                                        <a asp-controller="Order" asp-action="OrdersDetails" asp-route-id="@line.Id">Details</a> |
+                                        <a asp-controller="Order" asp-action="Delete" asp-route-id="@line.Id" asp-route-customerId="@Model.CustomerModel.Id">Delete</a>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="container text-right">
+                    @if (Model.NotEmpty)
+                    {
+                        <form asp-controller="Customer" asp-action="GenerateOrderPdf" asp-route-id="@Model.CustomerModel.Id" method="POST" target="_blank">
+                            <div class="col">
+                                <input type="submit" value="Hämta plocklista" class="btn btn-info" />
+                            </div>
+                        </form>
+
+                    }
+                    else
+                    {
+                        <p>
+                            Inga ordrar att skicka!
+                            <br />
+                            Vänta tills kund lagt till och klarmarkerat sina ordrar.
+                        </p>
+
+                    }
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-sm-12">
+
+                <h2>Summering</h2>
+                <hr />
+
+
+                <table class="table table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Produkt
+                            </th>
+                            <th>
+                                Kategori
+                            </th>
+                            <th class="text-right">
+                                Antal
+                            </th>
+                            <th class="text-right">
+                                Sub Total
+                            </th>
+                            <th class="text-right">
+                                Marginal %
+                            </th>
+                            <th class="text-right">
+                                Marginal
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var line in Model.OrderSummary)
+                        {
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => line.ProductTitle)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => line.Category)
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(modelItem => line.Quantity) st
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(modelItem => line.SubTotal) kr
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(modelItem => line.MarginPercent) %
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(modelItem => line.Margin) kr
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-right">
+                                Order totalt:
+                                <br />
+                                <b>
+                                    @Model.OrderTotal.ToString() kr
+
+                                </b>
+
+                            </td>
+                            <td class="text-right">
+                                Marginal totalt:
+                                <br />
+                                <b>
+                                    @Model.TotalMargin.ToString() kr
+
+                                </b>
+
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-sm-12">
+                <h2>Historik - Skickade ordrar</h2>
+                <hr />
+                <table class="table table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Ordernummer
+                            </th>
+                            <th>
+                                Förnamn
+                            </th>
+                            <th>
+                                Efternamn
+                            </th>
+                            <th class="text-right">
+                                Skickad
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var line in Model.Orders)
+                        {
+                            if (line.OrderState.OrderDelivered)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.Id)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => line.LastName)
+                                    </td>
+                                    <td class="text-right">
+                                        @Html.DisplayFor(modelItem => line.OrderState.DateDelivered)
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Confirm send orders modal -->
+<div class="modal" id="deliveryModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Markera order som levererad?</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>
+                    Är du säker på att du vill markera denna order som levererad? <br />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Avbryt</button>
+                <form asp-controller="Order" asp-action="DeliverOrder" asp-route-id="@Model.CustomerModel.Id" method="POST">
+                    <div class="col">
+                        <input type="submit" value="Markera order som levererad" class="btn btn-primary" />
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@*@model WebApplication2.Models.OrderModel*@
+@model WebApplication2.Models.ViewModels.DeleteOrderViewModel
+
+
+@{
+    ViewData["Title"] = "Radera Order";
+}
+
+<h1>Radera Order</h1>
+
+<h3>Är du säker på att du vill radera denna order?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Kundnummer
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Ordernummer
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Förnamn
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            Efternamn
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.LastName)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" asp-route-id="@Model.Order.Id" asp-route-customerId="@Model.Customer.Id">
+        <input type="hidden" asp-for="Order.Id" />
+        <input type="submit" value="Radera" class="btn btn-danger" />
+    </form>
+    <hr />
+    <a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.Customer.Id">Tillbaka</a>
+
+</div>

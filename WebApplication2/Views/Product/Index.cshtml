@@ -1,0 +1,86 @@
+﻿@model WebApplication2.Models.ViewModels.ProductListViewModel
+
+@{
+    ViewData["Title"] = "Produkter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Produkter</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-info">Lägg till ny</a>
+</p>
+<table class="table table-responsive-sm">
+    <thead>
+        <tr>
+            <th>
+                Titel
+            </th>
+            <th>
+                Undertitel
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Pris
+            </th>
+            <th>
+                Kategori
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Category)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<center>
+    <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+        @*@if (Model.Products.HasPreviousPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+            }*@
+
+        @for (var i = 1; i <= Model.Products.TotalPages; i++)
+        {
+            @if (Model.Products.PageIndex == i)
+            {
+                <a asp-action="Index" asp-route-pageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+            }
+            else
+            {
+                <a asp-action="Index" asp-route-pageIndex="@i" class="btn btn-outline-info">@i</a>
+            }
+        }
+
+        @*@if (Model.Products.HasNextPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+            }*@
+    </div>
+</center>

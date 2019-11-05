@@ -1,0 +1,209 @@
+﻿@model WebApplication2.Models.OrdersPdfModel
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI';
+            font-size: 20px !important;
+        }
+
+        .page {
+            page-break-before: always;
+        }
+
+        .custom-table {
+            padding: 15px 15px 15px 15px;
+            border: dashed;
+            border-color: gray;
+            border-width: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <br />
+        <div style="text-align: right; position: absolute; left: 800px;">
+            <img src="http://sweetforyou.azurewebsites.net/images/LOGO.png" width="250" />
+        </div>
+        <br />
+        <h1>Kundnummer: @Model.Customer.Id</h1>
+        <table class="custom-table">
+            <thead>
+                <tr style="        text-align: left;">
+                    <th width="300">Kunduppgifter:</th>
+                    <th width="300">Kontakt:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Customer.Company</td>
+                    <td>@Model.Customer.FirstName</td>
+                </tr>
+                <tr>
+                    <td>@Model.Customer.Department</td>
+                    <td>@Model.Customer.LastName</td>
+                </tr>
+                <tr>
+                    <td>@Model.Customer.Receiver</td>
+                    <td>@Model.Customer.User.Email</td>
+                </tr>
+                <tr>
+                    <td>@Model.Customer.Street</td>
+                    <td>@Model.Customer.Telephone</td>
+                </tr>
+                <tr>
+                    <td>@Model.Customer.PostalCode  @Model.Customer.City</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <br />
+        <h2>Ordersummering:</h2>
+        <table border="0" width="1000">
+            <thead>
+                <tr style=" text-align: left;">
+                    <th width="">Produkt</th>
+                    <th width="">Kategori</th>
+                    <th width="">Antal</th>
+                    <th width="" style="text-align: right;">Subtotal</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.OrderSummary)
+                {
+
+                    <tr>
+                        <td>
+                            @line.ProductTitle
+                        </td>
+                        <td>
+                            @line.Category
+                        </td>
+                        <td>
+                            @line.Quantity st
+                        </td>
+                        <td style="        text-align: right;">
+                            @line.SubTotal kr
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right;">
+                        <hr />
+                        Order totalt:
+                        <br />
+                        <b>
+                            @Model.OrderTotal.ToString() kr
+
+                        </b>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+    </div>
+    <br />
+    @foreach (var order in Model.Orders)
+    {
+        <div class="page">
+            <br />
+            <div style="text-align: right; position: absolute; left: 800px;">
+                <img src="http://sweetforyou.azurewebsites.net/images/LOGO.png" width="250" />
+            </div>
+            <br />
+
+            <table>
+                <thead>
+                    <tr style="text-align: left;">
+                        <th width="300"><h1>Ordernummer: @order.Id</h1></th>
+                    </tr>
+                    <tr style="text-align: left;">
+                        <th width="300"><h4>Betalningsmetod: @Model.Customer.PayMethod</h4></th>
+                        <th width="300"><h4>Nummer: @Model.Customer.PayNumber</h4></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@order.FirstName @order.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>@order.Email</td>
+                    </tr>
+                    <tr>
+                        <td>@order.PhoneNumber</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <table width="1000">
+                <thead>
+                    <tr style=" text-align: left;">
+                        <th>
+                            Produkt
+                        </th>
+                        <th>
+                            Antal
+                        </th>
+                        <th>
+                            á Pris
+                        </th>
+                        <th style="text-align: right;">
+                            Totalt
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in order.OrderLines)
+                    {
+                        <tr>
+                            <td>
+                                @item.Product.Title
+                            </td>
+                            <td>
+                                @item.Quantity
+                            </td>
+                            <td>
+                                @item.Price
+                            </td>
+                            <td style="text-align: right;">
+                                @((item.Quantity * item.Price).ToString("c"))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right;">
+                            <hr />
+                            @{
+                                decimal totalSum = 0;
+                                foreach (var item in order.OrderLines)
+                                {
+                                    totalSum += item.Price * item.Quantity;
+
+                                }
+                            }
+                            @totalSum.ToString("c")
+                        </td>
+                    </tr>
+                </tfoot>
+
+            </table>
+            <br />
+        </div>
+    }
+
+
+
+</body>
+</html>

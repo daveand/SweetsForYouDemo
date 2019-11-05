@@ -1,0 +1,38 @@
+﻿@model WebApplication2.Models.OrderModel
+
+@{
+    ViewData["Title"] = "Radera Order";
+}
+
+<h1>Radera Order</h1>
+
+<h3>Är du säker på att du vill radera denna order?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Ordernummer
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Förnamn
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            Efternamn
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+    </dl>
+
+    <form asp-action="MyOrdersDelete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Radera" class="btn btn-danger" /> |
+        <a asp-action="MyOrders">Tillbaka</a>
+    </form>
+</div>

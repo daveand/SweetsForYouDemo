@@ -1,0 +1,118 @@
+﻿@model OrdersDetailsViewModel
+
+@{
+    ViewData["Title"] = "Orderdetaljer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Orderdetaljer</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+Ordernummer        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Id)
+        </dd>
+        <dt class="col-sm-2">
+Förnamn        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+Efternamn        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.LastName)
+        </dd>
+        <dt class="col-sm-2">
+Telefon        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+Email        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Email)
+        </dd>
+    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.OrderDetails.OrderId)*@
+                    Ordernummer
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.OrderDetails.ProductTitle)*@
+                    Produkt
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.OrderDetails.Quantity)*@
+                    Antal
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.OrderDetails.Price)*@
+                    á Pris
+                </th>
+                <th>
+                    Totalt
+                </th>
+                @*<th></th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @((item.Quantity * item.Price).ToString("c"))
+                    </td>
+                    @*<td>
+                        <a asp-action="OrderLineEdit" asp-route-id="@item.Id">Ändra</a> |
+                        <a asp-action="OrderLineDelete" asp-route-id="@item.Id">Radera</a>
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-right">Totalt:</td>
+                <td class="text-left">
+                    @{
+                        decimal totalSum = 0;
+                        foreach (var item in Model.OrderDetails)
+                        {
+                            totalSum += item.Price * item.Quantity;
+
+                        }
+                    }
+                    @totalSum.ToString("c")
+
+
+                    @*@Model.Order.OrderTotal.ToString("c")*@
+                </td>
+            </tr>
+        </tfoot>
+
+    </table>
+
+</div>
+<div>
+    <a asp-action="MyOrders">Tillbaka</a> |
+    @*<a asp-action="Edit" asp-route-id="@Model.Order.Id">Ändra</a> |*@
+    <a asp-action="MyOrdersDelete" asp-route-id="@Model.Order.Id">Radera</a> 
+
+</div>

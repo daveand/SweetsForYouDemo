@@ -1,0 +1,165 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registrera ny kund";
+}
+
+
+<div class="row justify-content-center">
+
+    <div class="col col-12 col-lg-8">
+        <div class="row">
+            <div class="col col-12 col-lg-12 text-center">
+                <h1 style="font-family: 'active'">
+                    Välkommen!
+                </h1>
+                <h6 style="font-family: 'Sans Serif'">
+                    Här beställer du gratis säljmaterial och<br />
+                    registrerar dig som kund.
+                    <br /><br />
+                </h6>
+
+            </div>
+        </div>
+
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div class="row">
+                <div class="col col-12 col-lg-6 jumbotron jumbotron-shop">
+                    <h5>Användaruppgifter:</h5>
+                    <hr />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.UserName">Användarnamn</label>
+                        <input asp-for="Input.UserName" class="form-control" />
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email">Email</label>
+                        <input asp-for="Input.Email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password">Lösenord</label>
+                        <input asp-for="Input.Password" class="form-control" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword">Bekräfta Lösenord</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col col-12 col-lg-6 jumbotron jumbotron-shop">
+                    <h5>Ansvarig beställare:</h5>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="Customer.FirstName">Förnamn</label>
+                        <input asp-for="Customer.FirstName" class="form-control" />
+                        <span asp-validation-for="Customer.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.LastName">Efternamn</label>
+                        <input asp-for="Customer.LastName" class="form-control" />
+                        <span asp-validation-for="Customer.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.Telephone">Telefonnummer</label>
+                        <input asp-for="Customer.Telephone" class="form-control" />
+                        <span asp-validation-for="Customer.Telephone" class="text-danger"></span>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-12 col-lg-6 jumbotron jumbotron-shop">
+                    <h5>Hur ska säljaren betala?</h5>
+                    <hr />
+                    <p>Ange här hur du vill att säljarna skall betala in till dig som är ansvarig. </p>
+
+                </div>
+                <div class="col col-12 col-lg-6 jumbotron jumbotron-shop">
+                    <div class="form-group">
+                        <label asp-for="Customer.PayMethod">Betalmetod för säljare</label>
+                        <select asp-for="Customer.PayMethod" class="form-control">
+                            <option value="Swish">Swish</option>
+                            <option value="Bankgiro">Kontonummer</option>
+                        </select>
+                        <span asp-validation-for="Customer.PayMethod" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.PayNumber">Swish / Kontonummer</label>
+                        <input asp-for="Customer.PayNumber" class="form-control" />
+                        <span asp-validation-for="Customer.PayNumber" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-12 col-lg-6 jumbotron jumbotron-shop">
+                    <h5>Verksamhet:</h5>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="Customer.Company">Skola / Verksamhet</label>
+                        <input asp-for="Customer.Company" class="form-control" />
+                        <span asp-validation-for="Customer.Company" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.Department">Klass / Avdelning</label>
+                        <input asp-for="Customer.Department" class="form-control" />
+                        <span asp-validation-for="Customer.Department" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.Participants">Antal säljare</label>
+                        <input asp-for="Customer.Participants" class="form-control" />
+                        <span asp-validation-for="Customer.Participants" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col col-12 col-lg-6 jumbotron jumbotron-shop">
+                    <h5>Leveransadress:</h5>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="Customer.Receiver">Mottagare</label>
+                        <input asp-for="Customer.Receiver" class="form-control" />
+                        <span asp-validation-for="Customer.Receiver" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.Street">Postaddress</label>
+                        <input asp-for="Customer.Street" class="form-control" />
+                        <span asp-validation-for="Customer.Street" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.PostalCode">Postnummer</label>
+                        <input asp-for="Customer.PostalCode" class="form-control" />
+                        <span asp-validation-for="Customer.PostalCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Customer.City">Postort</label>
+                        <input asp-for="Customer.City" class="form-control" />
+                        <span asp-validation-for="Customer.City" class="text-danger"></span>
+                    </div>
+                    <center>
+                        <button type="submit" class="btn btn-info">Registrera</button>
+
+                    </center>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col col-12 col-lg-12 text-center">
+                <h6 style="font-family: 'Sans Serif'">
+                    Efter registrering tar det ca 2-4 arbetsdagar att få materialet.
+                </h6>
+                <h1 style="font-family: 'active'">
+                    Lycka till!
+                </h1>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

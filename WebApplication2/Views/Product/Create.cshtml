@@ -1,0 +1,78 @@
+﻿@model WebApplication2.Models.ProductModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Lägg till produkt</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="POST" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Titel</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubTitle" class="control-label">Undertitel</label>
+                <input asp-for="SubTitle" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Beskrivning</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contents" class="control-label">Innehåll</label>
+                <textarea asp-for="Contents" class="form-control"></textarea>
+                <span asp-validation-for="Contents" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Pris per enhet</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Margin" class="control-label">Marginal %</label>
+                <input asp-for="Margin" class="form-control" />
+                <span asp-validation-for="Margin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label">Kategori</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <a asp-area="" asp-controller="Product" asp-action="CreateCategory">Ny kategori</a>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label">Bild</label>
+                <br />
+                <input type="file" asp-for="ImageFile">
+            </div>
+            @*<div class="form-group">
+            <label asp-for="ImageName" class="control-label"></label>
+            <input type="text" asp-for="ImageName">
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageDescription" class="control-label"></label>
+            <input type="text" asp-for="ImageDescription">
+        </div>*@
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Lägg till" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Tillbaka</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

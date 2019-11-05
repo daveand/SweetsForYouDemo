@@ -1,0 +1,212 @@
+﻿@inject SignInManager<IdentityUser> signInManager;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sweets For You - Tjäna pengar till klassen, laget och föreningen!</title>
+    <meta name="description" content="Tjäna pengar till klassen, laget och föreningen! Smidigt, snabbt och enkelt. Kom igång enkelt!" />
+    <meta name="keywords" content="Tjäna pengar till klassen, choklad, kola, lakrits, sweets for you"/>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+    </environment>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <div class="row navbar-small login-wrapper">
+            <div class="col col-3">
+                @await Component.InvokeAsync("ShoppingCartSummary")
+            </div>
+            <div class="col-9" style="padding-right: 0px;">
+                <partial name="_LoginPartial" />
+            </div>
+
+        </div>
+        <header style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="jumbotron jumbotron-body border-bottom box-shadow text-center">
+                <div class="row">
+                    <div class="col col-12 col-lg-6 navbar-large" style="font-size: 25px;">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </div>
+                    <div class="col col-12 col-lg-6 navbar-large">
+                        <partial name="_LoginPartial" />
+                    </div>
+
+                </div>
+
+
+                <nav class="navbar navbar-expand-lg navbar-light navbar-small justify-content-center" style="font-size: 16px;">
+                    <a class="navbar-brand mx-auto" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/LOGO.png" height="150" alt="Sweet For You" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+
+                        <ul class="navbar-nav">
+                            @if (!signInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="ProductList">Produkter</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Information">Information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a>
+                            </li>
+                            @if (!signInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Beställ här!</a>
+                                </li>
+                            }
+                            @if (ViewContext.HttpContext.User.IsInRole("User") | ViewContext.HttpContext.User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="ProductShop">Beställ här!</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="MyOrders">Mina ordrar</a>
+                                </li>
+                                <li class="nav-item">
+                                </li>
+                            }
+                            @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                            {
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Administration
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-family: 'Arial'; font-size: 12px;">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="Index">Produkter</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">Kunder</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="Orders">Ordrar</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Statistics" asp-action="Index">Statistik</a>
+                                    </div>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                </nav>
+                <nav class="navbar navbar-expand-sm navbar-light bg-white navbar-large" style="font-size: 16px;">
+                    <div class="navbar-collapse collapse">
+                        <ul class="navbar-nav flex-grow-1 navbar-menu" style="height: 10px; margin-top: 0px;">
+                            @if (!signInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="ProductList">Produkter</a>
+                                </li>
+                            }
+                            @if (!signInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Beställ här!</a>
+                                </li>
+                            }
+                            @if (ViewContext.HttpContext.User.IsInRole("User") | ViewContext.HttpContext.User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="ProductShop">Beställ här!</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="MyOrders">Mina ordrar</a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+
+                    <a class="navbar-brand mx-auto" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/LOGO.png" class="img-logo" alt="Sweet For You" />
+                    </a>
+
+                    <div class="navbar-collapse collapse">
+                        <ul class="navbar-nav flex-grow-1 navbar-menu" style="height: 10px; margin-top: 0px;">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Information">Information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a>
+                            </li>
+                            @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                            {
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Administration
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-family: 'Arial'; font-size: 12px;">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="Index">Produkter</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">Kunder</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="Orders">Ordrar</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Statistics" asp-action="Index">Statistik</a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div class="jumbotron jumbotron-body border-bottom box-shadow" style="padding-top: 50px; margin-bottom: 20px; ">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="text-muted">
+            <div class="jumbotron jumbotron-body border-bottom box-shadow" style="font-size: 14px;">
+
+                &copy; 2019 - Sweets For You -
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Allmänna villkor</a> -
+                <a asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <environment include="Development">
+        @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

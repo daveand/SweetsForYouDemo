@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model WebApplication2.Models.ViewModels.ShoppingCartViewModel
+
+<h2>Kundvagn</h2>
+<br />
+<h6>Följande produkter har lagts till:</h6>
+
+<div class="jumbotron jumbotron-shop">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Antal</th>
+                <th>Produkt</th>
+                <th class="text-right">á Pris</th>
+                <th class="text-right">Totalt</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.ShoppingCart.ShoppingCartItems)
+            {
+                <tr>
+                    <td class="text-center">@line.Quantity</td>
+                    <td class="text-left">@line.Product.Title</td>
+                    <td class="text-right">@line.Product.Price.ToString("c")</td>
+                    <td class="text-right">
+                        @((line.Quantity * line.Product.Price).ToString("c"))
+                    </td>
+                    <td class="text-center">
+                        <a class="fas fa-minus-circle" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-productId="@line.Product.Id"></a>
+                        @*<a class="fas fa-plus-circle" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-productId="@line.Product.Id"></a>*@
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right"><b>Ordersumma:</b></td>
+                <td class="text-right">
+                    <b>@Model.ShoppingCartTotal.ToString("c")</b>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="text-right">
+        <div class="btn-group ">
+            <a class="btn btn-info" asp-controller="Product" asp-action="ProductShop">Tillbaka</a>
+        </div>
+        <div class="btn-group ">
+            <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Fortsätt</a>
+        </div>
+
+    </div>
+
+</div>
+

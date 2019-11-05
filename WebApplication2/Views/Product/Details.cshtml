@@ -1,0 +1,62 @@
+﻿@model WebApplication2.Models.ProductModel
+
+@{
+    ViewData["Title"] = "Detaljer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detaljer</h1>
+<hr />
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Titel
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            Undertitel
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubTitle)
+        </dd>
+        <dt class="col-sm-2">
+            Beskrivning
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            Innehåll
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Contents)
+        </dd>
+
+        <dt class="col-sm-2">
+            Pris per enhet
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price) kr
+        </dd>
+        <dt class="col-sm-2">
+            Marginal
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Margin) %
+        </dd>
+
+
+        <dt class="col-sm-2">
+            Kategori
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.Category)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Tillbaka</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Ändra</a>
+</div>

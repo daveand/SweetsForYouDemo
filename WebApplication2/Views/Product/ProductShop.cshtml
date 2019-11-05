@@ -1,0 +1,71 @@
+﻿
+@model WebApplication2.Models.ViewModels.ProductListViewModel
+
+@{
+    ViewData["Title"] = "ProductShop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <center>
+        <h2 style="font-family: 'Active'">Här beställer du dina produkter!</h2>
+        <h6 style="font-family: 'Sans Serif'">Klicka i hur många av varje du vill beställa.</h6>
+        <h6 style="font-family: 'Sans Serif'">När du är klar, gå till kundvagn uppe till vänster.</h6>
+        <br />
+        <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+            @*@if (Model.Products.HasPreviousPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+            }*@
+
+            @for (var i = 1; i <= Model.Products.TotalPages; i++)
+            {
+                @if (Model.Products.PageIndex == i)
+                {
+                    <a asp-action="ProductShop" asp-route-pageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+                }
+                else
+                {
+                    <a asp-action="ProductShop" asp-route-pageIndex="@i" class="btn btn-outline-info">@i</a>
+                }
+            }
+
+            @*@if (Model.Products.HasNextPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+            }*@
+        </div>
+    </center>
+<br />
+<div class="row marginTop">
+    @foreach (var product in Model.Products)
+    {
+        @Html.Partial("ProductsSummary", product)
+    }
+</div>
+
+<center>
+    <div class="btn-group" role="toolbar" aria-label="Toolbar with button groups">
+        @*@if (Model.Products.HasPreviousPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex - 1)" class="btn btn-outline-info">Föregående</a>
+            }*@
+
+        @for (var i = 1; i <= Model.Products.TotalPages; i++)
+        {
+            @if (Model.Products.PageIndex == i)
+            {
+                <a asp-action="ProductShop" asp-route-pageIndex="@i" class="btn btn-outline-info overflow disabled">@i</a>
+            }
+            else
+            {
+                <a asp-action="ProductShop" asp-route-pageIndex="@i" class="btn btn-outline-info">@i</a>
+            }
+        }
+
+        @*@if (Model.Products.HasNextPage)
+            {
+                <a asp-action="ProductList" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" class="btn btn-outline-info">Nästa</a>
+            }*@
+    </div>
+</center>

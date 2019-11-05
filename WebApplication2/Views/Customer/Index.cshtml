@@ -1,0 +1,65 @@
+﻿@model IEnumerable<WebApplication2.Models.CustomerModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Kunder</h1>
+<hr />
+
+<table id="customersTable" class="table" style="font-size:14px; width:100%">
+    <thead>
+        <tr>
+            <th>Kundnummer</th>
+            <th>Förnamn</th>
+            <th>Efternamn</th>
+            <th>Skola / Förening</th>
+            <th>Klass / Avdelning</th>
+            <th>Klass / Avdelning</th>
+            <th>Email</th>
+            <th>Telefon</th>
+            <th>Detaljer</th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#customersTable').DataTable({
+                "ajax": "/Customer/GetCustomers",
+                "columns": [
+                    { "data": "id" },
+                    { "data": "firstName" },
+                    { "data": "lastName" },
+                    { "data": "company" },
+                    { "data": "department" },
+                    { "data": "email" },
+                    { "data": "telephone" },
+                    {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button>Detaljer</button>"
+                    }
+                ],
+                "order": [[1, 'asc']]
+
+            });
+
+            $('#customersTable tbody').on( 'click', 'button', function (e) {
+                var data = table.row( $(this).parents('tr') ).data();
+                //alert( data.firstName +"'s lastname is: "+ data.lastName );
+                window.location.href = "Customer/Details/" + data.id;
+             } );
+
+
+        });
+
+    </script>
+
+}
+

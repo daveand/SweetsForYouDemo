@@ -1,0 +1,176 @@
+﻿@model OrdersViewModel
+
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ordrar</h1>
+<hr />
+<div class="row">
+    <div class="col col-sm-12">
+        <h5>Ordrar klara för leverans</h5>
+        <table class="table table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>
+                        Kundnummer
+                    </th>
+                    <th>
+                        Namn
+                    </th>
+                    <th>
+                        Skola / Förening
+                    </th>
+                    <th>
+                        Klass / Avdelning
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Customer)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Company)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department)
+                        </td>
+                        <td>
+                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@item.Id">Detaljer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<hr />
+<h5>Orderlista</h5>
+<br />
+<table id="ordersTable" class="table" style="font-size:12px; width:100%">
+    <thead>
+        <tr>
+            <th>Ordernummer</th>
+            <th>Kundnummer</th>
+            <th>Skola / Förening</th>
+            <th>Klass / Avdelning</th>
+            <th>Förnamn</th>
+            <th>Efternamn</th>
+            <th>Order lagd</th>
+            <th>Order klar</th>
+            <th>Detaljer</th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#ordersTable').DataTable({
+                "ajax": "/Order/GetOrders",
+                "columns": [
+                    { "data": "id" },
+                    { "data": "customerId" },
+                    { "data": "company" },
+                    { "data": "department" },
+                    { "data": "firstName" },
+                    { "data": "lastName" },
+                    { "data": "orderPlaced" },
+                    { "data": "orderState" },
+                    {
+                        "targets": -1,
+                        "data": null,
+                        "defaultContent": "<button>Detaljer</button>"
+                    }
+                ],
+                "order": [[1, 'asc']]
+
+            });
+
+            $('#ordersTable tbody').on('click', 'button', function (e) {
+                var data = table.row($(this).parents('tr')).data();
+                //alert( data.firstName +"'s lastname is: "+ data.lastName );
+                window.location.href = "OrdersDetails/" + data.id;
+            });
+
+
+        });
+
+    </script>
+
+}
+
+
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Order number
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Order date
+                </th>
+                <th>
+                    Order sent
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var line in Model.Order)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => line.Id)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => line.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => line.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => line.OrderPlaced)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => line.OrderState.OrderSent)
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@line.Id">Edit</a> |
+                        <a asp-action="OrdersDetails" asp-route-id="@line.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@line.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+
+
+
+
+
+        </tbody>
+
+    </table>*@

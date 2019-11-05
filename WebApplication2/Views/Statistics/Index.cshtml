@@ -1,0 +1,171 @@
+﻿@model IEnumerable<WebApplication2.Controllers.GetSalesModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Statistik</h1>
+<hr />
+<div class="row">
+    <div class="col col-sm-12">
+        <h6>Orderstatistik</h6>
+        <div class="jumbotron jumbotron-shop">
+            <div class="row">
+                <div class="col col-sm-6">
+                    <div id="barChart_div"></div>
+                </div>
+                <div class="col col-sm-6">
+                    <div id="pieChart_div"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col col-sm-12">
+        <h6>Försäljning</h6>
+        <div class="jumbotron jumbotron-shop">
+            <div class="row">
+                <div class="col col-sm-2">
+                    <form class="form-group" id="form1" name="form1" onchange="LoadSalesData()">
+                        <label class="control-label">Årtal:</label>
+                        <select class="form-control" id="salesYear">
+                            <option value="0">Alla</option>
+                            @foreach (var item in ViewBag.SalesYears as SelectList)
+                            {
+                                <option value="@item.Text">@item.Text</option>
+
+                            }
+                        </select>
+                    </form>
+                </div>
+                <div class="col col-sm-10">
+                    <div id="salesLine_div"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {
+        packages: ['corechart', 'bar']
+    });
+    google.charts.setOnLoadCallback(LoadData);
+    function LoadData() {
+        $.ajax({
+            url: '@Url.Action("GetOrders", "Statistics")',
+            dataType: "json",
+            type: "GET",
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function(data) {
+                OrdersChart(data);
+                return false;
+            }
+        });
+        return false;
+    }
+    function OrdersChart(data) {
+        //console.log(data);
+        var dataArray = [
+            ['Produkt', 'Antal best']
+        ];
+        $.each(data, function(i, item) {
+            dataArray.push([item.product, item.orderQty]);
+        });
+        //console.log('DataArray: ' + dataArray);
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var barOptions = {
+            title: 'Totalt antal beställningar per produkt',
+            chartArea: {
+                width: '50%'
+            },
+            colors: ['steelblue'],
+            hAxis: {
+                title: 'Antal',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Produkt'
+            },
+            legend: 'none'
+        };
+        var pieOptions = {
+            title: 'Procentuell representation',
+            legend: 'right'
+        };
+        var barChart = new google.visualization.BarChart(document.getElementById('barChart_div'));
+        var pieChart = new google.visualization.PieChart(document.getElementById('pieChart_div'));
+        barChart.draw(data, barOptions);
+        pieChart.draw(data, pieOptions);
+        return false;
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', {
+        packages: ['corechart', 'line']
+    });
+    google.charts.setOnLoadCallback(LoadSalesData);
+    function LoadSalesData() {
+        $.ajax({
+            url: '@Url.Action("GetSales", "Statistics")',
+            dataType: "json",
+            type: "GET",
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function(data) {
+                SalesChart(data);
+                return false;
+            }
+        });
+        return false;
+    }
+
+    function SalesChart(data) {
+        //var data = JSON.parse('@Json.Serialize(@Model)');
+        var year = parseInt(document.getElementById('salesYear').value);
+        console.log(year);
+        console.log(data);
+        var dataArray = [
+            ['Månad', 'Summa']
+        ];
+        $.each(data, function (i, item) {
+            if (item.year == year | year == 0) {
+                dataArray.push([ item.year + '-' + item.month, item.amount]);
+            }
+        });
+        console.log('DataArray: ' + dataArray);
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: 'Försäljning per månad',
+            height: '400',
+            chartArea: {
+                width: '80%'
+            },
+            colors: ['steelblue'],
+            hAxis: {
+                title: 'Månad',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Försäljning'
+            },
+            legend: 'none'
+        };
+        var lineChart = new google.visualization.LineChart(document.getElementById('salesLine_div'));
+        lineChart.draw(data, options);
+        return false;
+    }
+</script>
