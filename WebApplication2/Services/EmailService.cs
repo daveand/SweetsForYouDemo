@@ -21,11 +21,11 @@ namespace WebApplication2.Services
             _client = client;
             _hostingEnvironment = hostingEnvironment;
 
-            _client = new SmtpClient("smtp01.binero.se");
+            _client = new SmtpClient("");
             _client.Port = 587;
             _client.EnableSsl = true;
             _client.UseDefaultCredentials = false;
-            _client.Credentials = new NetworkCredential("noreply@sweetsforyou.se", "NoReply!1234");
+            _client.Credentials = new NetworkCredential("", "");
 
 
         }
@@ -34,7 +34,7 @@ namespace WebApplication2.Services
         {
 
             MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("noreply@sweetsforyou.se");
+            mailMessage.From = new MailAddress("");
             mailMessage.To.Add(toEmail);
             mailMessage.Body = body;
             mailMessage.Subject = subject;
